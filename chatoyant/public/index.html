@@ -1,43 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr" xml:lang="fr">
   <head>
+    <!-- The first thing in any HTML file should be the charset -->
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <meta name="locale" content="fr" />
+    <!-- Make the page mobile compatible -->
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>React App</title>
+    <!-- Allow installing the app to the homescreen -->
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <meta name="theme-color" content="#28d488" />
+
+    <link rel="preconnect" href="https://s3.eu-central-1.amazonaws.com">
+    <link rel="dns-prefetch" href="https://s3.eu-central-1.amazonaws.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+
+    <link rel="icon" href="/favicon.ico" />
+
+    <!-- Primary Meta Tags -->
+    <title>
+      Chatoyant™
+    </title>
+    <meta name="description" content="Le chat chatoyant" data-react-helmet="true" />
+
+    <link rel="stylesheet" href="//fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Fira+Sans:wght@400;500;700;900&display=swap"/>
+
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        font-family: DM Sans;
+        margin: 0;
+      }
+      /* CSS for the main loader */
+      .loader-container {
+        align-items: center;
+        background-color: white;
+        display: flex;
+        height: 100vh;
+        justify-content: center;
+        width: 100vw;
+      }
+
+    </style>
   </head>
+
   <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
+    <!-- Display a message if JS has been disabled on the browser. -->
+    <noscript>
+      If you're seeing this message, that means
+      <strong>JavaScript has been disabled on your browser</strong>, please
+      <strong>enable JS</strong> to make this app work.
+    </noscript>
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
+    <!-- The app hooks into this div -->
+    <div id="root">
+      <div class="loader-container">
+      </div>
+    </div>
+    </div>
+    <!-- A lot of magic happens in this file. HtmlWebpackPlugin automatically injects all assets (e.g. bundle.js, main.css) with the correct HTML tags, which is why they are missing in this file. Don't add any assets here! (Check out webpack.dev.babel.js and webpack.prod.babel.js if you want to know more) -->
   </body>
 </html>
