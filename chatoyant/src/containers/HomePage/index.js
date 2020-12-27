@@ -2,17 +2,17 @@ import React from 'react';
 import { Box } from 'grommet/components/Box';
 import { Text } from 'grommet/components/Text';
 
-import globalContext from '../../components/globalContext';
+import GlobalContext from '../../components/globalContext';
 
 function HomePage() {
   return (
-    <globalContext.Consumer>
-      {value => (
+    <GlobalContext.Consumer>
+      {context => (
         <Box>
-          <Text>{`Salut les nuls ${value}`}</Text>
+          <Text>{`Salut les nuls ${context.cars.car001.name}`}</Text>
         </Box>
       )}
-    </globalContext.Consumer>
+    </GlobalContext.Consumer>
   );
 }
 

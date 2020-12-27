@@ -1,8 +1,6 @@
-import { React } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import GlobalContext from './globalContext';
-
-
 
 export default class GlobalProvider extends React.PureComponent {
 
@@ -25,6 +23,7 @@ export default class GlobalProvider extends React.PureComponent {
     render() {
 
         const { cars } = this.state;
+        // eslint-disable-next-line react/prop-types
         const { children } = this.props;
 
         return (
