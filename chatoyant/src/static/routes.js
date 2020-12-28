@@ -2,7 +2,7 @@
 
 const routes = {
   home: '/',
-  lobby: '/Lobby',
+  main: '/Main',
 };
 
 export default routes;
