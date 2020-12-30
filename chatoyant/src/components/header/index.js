@@ -6,14 +6,15 @@ import PropTypes from 'prop-types';
 import displayText from '../../utils/languages'
 
 function Header(props) {
+
   return (
     <Box
       direction="row"
-      border={{ color: 'dark-2', size: 'medium' }}
+      border={{ color: 'dark-2', size: 'medium', side: "bottom" }}
     >
       <Box
         background="dark-3"
-        pad="small"
+        pad={{bottom: "small", top: "small"}}
         basis="small"
         border={{color: 'dark-2', size: "small", side: "right"}}
       >

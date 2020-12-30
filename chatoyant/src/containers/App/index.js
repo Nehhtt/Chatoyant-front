@@ -7,13 +7,15 @@ const Main = lazy(() => import('../Main/index'));
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        {/* Va falloir gérer public/private route, à voir avec Nico et Lucas */}
-        <Route exact path={routes.home} component={HomePage} />
-        <Route exact path={routes.main} component={Main} />
-      </Switch>
-    </Router>
+    <div style={{height: "100%"}}>
+      <Router>
+        <Switch>
+          {/* Va falloir gérer public/private route, à voir avec Nico et Lucas */}
+          <Route exact path={routes.home} component={HomePage} />
+          <Route exact path={routes.main} component={Main} />
+        </Switch>
+      </Router>
+    </div>
   );
 }
 
