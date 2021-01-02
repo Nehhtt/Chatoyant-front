@@ -25,7 +25,12 @@ function HomePage() {
               pathname: routes[0].path,
             }}
           />
-          <Button label="Inscription" />
+          <Button
+            label="Inscription"
+            to={{
+              pathname: routes[2].path,
+            }}
+          />
         </Box>
       </Box>
     </Box>
