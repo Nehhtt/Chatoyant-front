@@ -1,21 +1,26 @@
-import React, { lazy } from 'react';
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
+/* eslint-disable no-console */
+import React from 'react';
+import { Switch, BrowserRouter as Router } from 'react-router-dom';
 import routes from '../../static/routes';
-
-const HomePage = lazy(() => import('../HomePage/index'));
-const Main = lazy(() => import('../Main/index'));
+import { AuthProvider } from '../../context';
+import AppRoute from '../../components/appRoutes';
 
 function App() {
   return (
-    <div style={{height: "100%"}}>
+    <AuthProvider>
       <Router>
         <Switch>
-          {/* Va falloir gérer public/private route, à voir avec Nico et Lucas */}
-          <Route exact path={routes.home} component={HomePage} />
-          <Route exact path={routes.main} component={Main} />
+          {routes.map((route) => (
+            <AppRoute
+              key={route.path}
+              path={route.path}
+              component={route.component}
+              isPrivate={route.isPrivate}
+            />
+          ))}
         </Switch>
       </Router>
-    </div>
+    </AuthProvider>
   );
 }
 

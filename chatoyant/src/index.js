@@ -6,6 +6,7 @@ import { Loader } from './components/atoms';
 
 const App = lazy(() => import('./containers/App'));
 
+
 ReactDOM.render(
   <Grommet theme={customTheme}>
     <Suspense fallback={<Loader />}>
