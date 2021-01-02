@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Box } from 'grommet/components/Box';
-import { Text } from 'grommet/components/Text';
 
 import useWindowSize from '../../utils/screenSize'
 
 import Header from '../../components/header';
 import Rooms from '../../components/rooms';
 import Welcome from '../../components/welcome';
+import Chat from '../../components/chat';
 
 const backgroundColor = "dark-3"
 const borderColor = "dark-2"
@@ -45,13 +45,7 @@ function Main() {
           basis="full"
         >
           {
-            choosedRoom? (
-              <Text>
-                {choosedRoom.name}
-                {' '}
-                est choisie
-              </Text>
-          ):<Welcome />
+            choosedRoom?<Chat />:<Welcome />
           }
         </Box>
       </Box>
