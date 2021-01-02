@@ -1,28 +1,34 @@
-/* eslint-disable spaced-comment */
-/* eslint-disable react/prop-types */
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/button-has-type */
 import React from 'react';
+import PropTypes from 'prop-types';
+import { Button } from 'grommet/components/Button';
+import { Box } from 'grommet/components/Box';
+import { Text } from 'grommet/components/Text';
 import { useAuthDispatch, logout, useAuthState } from '../../context';
 
 function WelcomePage(props) {
-  const dispatch = useAuthDispatch(); // read dispatch method from context
-  const userDetails = useAuthState(); //read user details from context
+  const dispatch = useAuthDispatch();
+  const userDetails = useAuthState();
 
   const handleLogout = () => {
-    logout(dispatch); //call the logout action
+    logout(dispatch);
 
-    props.history.push('/'); //navigate to logout page on logout
+    props.history.push('/');
   };
   return (
-    <div style={{ padding: 10 }}>
-      <div>
-        <h1>Dashboard</h1>
-        <button onClick={handleLogout}>Logout</button>
-      </div>
-      <p>Welcome {userDetails.user.email}</p>
-    </div>
+    <Box fill align="center" justify="center">
+      <Text>
+        Bienvenue
+        {userDetails.userDetails.userName}
+      </Text>
+      <Box margin="xxlarge">
+        <Button label="Déconnexion" onClick={handleLogout} />
+      </Box>
+    </Box>
   );
 }
+
+WelcomePage.propTypes = {
+  history: PropTypes.object,
+};
 
 export default WelcomePage;

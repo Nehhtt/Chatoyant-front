@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const user = localStorage.getItem('currentUser')
   ? JSON.parse(localStorage.getItem('currentUser')).data.user
   : '';
@@ -13,9 +12,7 @@ export const initialState = {
   errorMessage: null,
 };
 
-// eslint-disable-next-line no-shadow
-export const AuthReducer = (initialState, action) => {
-  console.log(action);
+export const AuthReducer = (action) => {
   switch (action.type) {
     case 'REQUEST_LOGIN':
       return {
