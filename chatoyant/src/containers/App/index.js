@@ -1,27 +1,26 @@
-import React, { lazy } from 'react';
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
+/* eslint-disable no-console */
+import React from 'react';
+import { Switch, BrowserRouter as Router } from 'react-router-dom';
 import routes from '../../static/routes';
-
-import GlobalProvider from '../../components/globalContext/globalProvider';
-
-const HomePage = lazy(() => import('../HomePage/index'));
-
-function Test() {
-  return (
-    <GlobalProvider>
-      <HomePage />
-    </GlobalProvider>
-  )
-}
+import { AuthProvider } from '../../context';
+import AppRoute from '../../components/appRoutes';
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        {/* Va falloir gérer public/private route, à voir avec Nico et Lucas */}
-        <Route exact path={routes.home} component={Test} />
-      </Switch>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Switch>
+          {routes.map((route) => (
+            <AppRoute
+              key={route.path}
+              path={route.path}
+              component={route.component}
+              isPrivate={route.isPrivate}
+            />
+          ))}
+        </Switch>
+      </Router>
+    </AuthProvider>
   );
 }
 

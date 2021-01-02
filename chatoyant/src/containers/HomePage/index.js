@@ -1,18 +1,34 @@
 import React from 'react';
 import { Box } from 'grommet/components/Box';
 import { Text } from 'grommet/components/Text';
-
-import GlobalContext from '../../components/globalContext';
+import Button from '../../components/atoms/Button/Button';
+import routes from '../../static/routes';
 
 function HomePage() {
   return (
-    <GlobalContext.Consumer>
-      {context => (
-        <Box>
-          <Text>{`Salut les nuls ${context.cars.car001.name}`}</Text>
+    <Box>
+      <Box align="center" margin="medium">
+        <Box direction="row">
+          <Text color="neutral-3" size="xxlarge" weight="bold">
+            CHAT
+          </Text>
+          <Text color="neutral-2" size="xxlarge" weight="bold">
+            OYANT
+          </Text>
         </Box>
-      )}
-    </GlobalContext.Consumer>
+      </Box>
+      <Box align="center" margin={{ top: 'xxlarge' }}>
+        <Box direction="row" gap="xlarge">
+          <Button
+            label="Connection"
+            to={{
+              pathname: routes[0].path,
+            }}
+          />
+          <Button label="Inscription" />
+        </Box>
+      </Box>
+    </Box>
   );
 }
 
