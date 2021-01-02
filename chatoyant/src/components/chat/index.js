@@ -5,44 +5,33 @@ import { TextInput } from 'grommet/components/TextInput';
 import { Button } from 'grommet/components/Button';
 import { Keyboard } from 'grommet/components/Keyboard';
 import { InfiniteScroll } from 'grommet/components/InfiniteScroll';
+import socketIOClient from "socket.io-client";
 
 import Message from '../message';
 
 // const backgroundColor = "dark-3"
 // const borderColor = "dark-2"
 
+const ENDPOINT = "http://127.0.0.1:8080";
+
 function Welcome() {
 
   const [ newMessage, setMessage ] = useState("")
-  const [ plain, setPlain ] = useState([
-    {content: 'a',key: 0},
-    {content: 'a',key: 1},
-    {content: 'a',key: 2},
-    {content: 'a',key: 3},
-    {content: 'a',key: 4},
-    {content: 'a',key: 5},
-    {content: 'a',key: 6},
-    {content: 'a',key: 7},
-    {content: 'a',key: 8},
-    {content: 'a',key: 9},
-    {content: 'a',key: 10},
-    {content: 'a',key: 11},
-    {content: 'a',key: 12},
-    {content: 'a',key: 13},
-    {content: 'a',key: 14},
-    {content: 'a',key: 15},
-    {content: 'a',key: 16},
+  const [ roomMessages, setRoomMessages ] = useState([
   ])
 
   const messagesEndRef = useRef(null)
 
+  const socket = socketIOClient(ENDPOINT);
+
 
   function handleSend() {
       // call api request
-      setPlain([
-        ...plain,
-        {content: newMessage, key: plain.length}
+      setRoomMessages([
+        ...roomMessages,
+        {content: newMessage, key: roomMessages.length}
       ])
+      socket.emit('chat message', newMessage)
       setMessage("")
       scrollToBottom()
   }
@@ -51,7 +40,20 @@ function Welcome() {
     messagesEndRef.current.scrollIntoView({ behavior: "instant" })
   }
 
-  useEffect(scrollToBottom, [plain]);
+  useEffect(scrollToBottom, [roomMessages]);
+
+  useEffect(() => {
+    socket.connect()
+    socket.on('connect', (data) => {
+      console.log("c'est connecté", data)
+    });
+
+    socket.on('received message', (data) => {
+      console.log("c'est reçus", data)
+    });
+
+    return () => socket.disconnect();
+  }, []);
 
   return (
     <Box
@@ -63,7 +65,7 @@ function Welcome() {
         height="95%"
         overflow="auto"
       >
-        <InfiniteScroll items={plain} show={plain.length - 1}>
+        <InfiniteScroll items={roomMessages} show={roomMessages.length - 1}>
           {(element) => (
             <Message key={element.key} userName="Hoho" date="20/12/2030" content={element.content} />
           )}

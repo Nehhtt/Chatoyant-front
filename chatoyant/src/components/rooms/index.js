@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import propTypes from 'prop-types'
 import { Box } from 'grommet/components/Box';
 import { Text } from 'grommet/components/Text';
 import { Avatar } from 'grommet/components/Avatar';
+import CreateRoom from '../createRoom';
 
 function Rooms(props) {
     const { roomsData, onClick } = props
+
+    const [ modal, setModal ] = useState(false)
+
+    function onClickHandle() {
+        setModal(!modal)
+    }
 
     if (roomsData.length === 0)
         return (
@@ -14,30 +21,59 @@ function Rooms(props) {
         )
 
     return (
-        roomsData.map((element) => (
-          <Box
-            direction="row"
-            pad="small"
-            elevation="small"
-            key={element.name}
-            onClick={() => onClick(element)}
-          >
-            <Avatar src="//s.gravatar.com/avatar/b7fb138d53ba0f573212ccce38a7c43b?s=80" />   
-            <Text
-              alignSelf="center"
-              size="small"
-              weight="bold"
-              margin={{left: "medium"}}
+      <Box
+        direction="column"
+        height="100%"
+      >
+        <Box
+          height="90%"
+        >
+          {roomsData.map((element) => (
+            <Box
+              direction="row"
+              pad="small"
+              key={element.name}
+              onClick={() => (onClick(element))}
+              justify="center"
             >
-              {element.name}
+              <Avatar
+                background={{color: "dark-1"}}
+                size="medium"
+              >
+                <Text
+                  weight="bold"
+                >
+                  {element.name.toUpperCase()[0]}
+                </Text>
+              </Avatar>
+            </Box>
+        ))}
+        </Box>
+        <Box
+          direction="row"
+          justify="center"
+        >
+          <Avatar
+            background={{color: "dark-1"}}
+            size="medium"
+            onClick={() => onClickHandle()}
+          >
+            <Text
+              color="white"
+              size="xxlarge"
+            >
+              +
             </Text>
-          </Box>
-        ))
+          </Avatar>
+        </Box>
+        {modal && <CreateRoom handleModal={onClickHandle} />}
+      </Box>
     );
 }
 
 Rooms.propTypes = {
     roomsData: propTypes.array,
+    onClick: propTypes.any,
 }
 
 export default Rooms;

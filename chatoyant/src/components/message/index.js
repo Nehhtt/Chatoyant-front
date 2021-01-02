@@ -23,7 +23,7 @@ function Message(props) {
         <Avatar
           size="medium"
           responsive={false}
-          src="//s.gravatar.com/avatar/b7fb138d53ba0f573212ccce38a7c43b?s=80"
+          src="https://i.imgur.com/EroY8Ii.png"
         />
       </Box>
       <Box

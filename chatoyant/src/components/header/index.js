@@ -14,11 +14,11 @@ function Header(props) {
     >
       <Box
         background="dark-3"
-        pad={{bottom: "small", top: "small"}}
+        pad={{top: "small", bottom: "small"}}
         basis="small"
         border={{color: 'dark-2', size: "small", side: "right"}}
       >
-        <Text size="xxlarge" textAlign="center" weight="bold">{displayText("Rooms")}</Text>
+        <Text size="xlarge" textAlign="center" weight="bold">{displayText("Rooms")}</Text>
       </Box>
       <Box 
         background="dark-3"
