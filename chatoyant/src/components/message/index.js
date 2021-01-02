@@ -11,21 +11,30 @@ function Message(props) {
 
   return (
     <Box
-      direction="raw"
-      pad="small"
+      direction="row" // reverse row si le message vient de la personne connectée
+      pad="xsmall"
+      flex={false}
+      height='80px'
+      
     >
       <Box
         pad="small"
       >
-        <Avatar src="//s.gravatar.com/avatar/b7fb138d53ba0f573212ccce38a7c43b?s=80" />
+        <Avatar
+          size="medium"
+          responsive={false}
+          src="//s.gravatar.com/avatar/b7fb138d53ba0f573212ccce38a7c43b?s=80"
+        />
       </Box>
       <Box
         direction="column"
       >
         <Box
-          direction="raw"
+          direction="row"
         >
-          <Text>
+          <Text
+            margin={{right: 'xsmall'}}
+          >
             {props.userName}
           </Text>
           <Text>
