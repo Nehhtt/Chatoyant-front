@@ -1,15 +1,14 @@
-/* eslint-disable no-console */
 /* eslint-disable react/jsx-curly-newline */
-/* eslint-disable no-extra-boolean-cast */
+/* eslint-disable no-console */
 /* eslint-disable react/prop-types */
 import React from 'react';
 import { Redirect, Route } from 'react-router-dom';
-
+import PropTypes from 'prop-types';
 import { useAuthState } from '../context';
 
 const AppRoutes = ({ component: Component, path, isPrivate, ...rest }) => {
   const userDetails = useAuthState();
-  console.log('====', !userDetails.token, isPrivate, path);
+  console.log('====', userDetails.token, isPrivate, path);
   return (
     <Route
       path={path}
@@ -23,6 +22,12 @@ const AppRoutes = ({ component: Component, path, isPrivate, ...rest }) => {
       {...rest}
     />
   );
+};
+
+AppRoutes.propTypes = {
+  component: PropTypes.object,
+  path: PropTypes.string,
+  isPrivate: PropTypes.bool,
 };
 
 export default AppRoutes;

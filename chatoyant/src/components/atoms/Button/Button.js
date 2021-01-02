@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Button as GrommetButton } from 'grommet/components/Button';
 import { Box } from 'grommet/components/Box';
 import Loader from '../Loader/Loader';
+import displayText from '../../../utils/languages';
 
 const Button = ({ to, loading, ...rest }) => {
   if (to) {
@@ -17,7 +18,7 @@ const Button = ({ to, loading, ...rest }) => {
           {...rest}
           disabled={loading || rest.disabled}
           icon={loading ? <Loader color={rest.textColor} /> : rest.icon}
-          label={rest.label ? <Box>{rest.label}</Box> : undefined}
+          label={rest.label ? <Box>{displayText(rest.label)}</Box> : undefined}
         />
       </Link>
     );
@@ -29,7 +30,7 @@ const Button = ({ to, loading, ...rest }) => {
       {...rest}
       disabled={loading || rest.disabled}
       icon={loading ? <Loader color={rest.textColor} /> : rest.icon}
-      label={rest.label ? <Box>{rest.label}</Box> : undefined}
+      label={rest.label ? <Box>{displayText(rest.label)}</Box> : undefined}
     />
   );
 };
