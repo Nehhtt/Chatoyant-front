@@ -1,18 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import propTypes from 'prop-types'
 import { Box } from 'grommet/components/Box';
 import { Text } from 'grommet/components/Text';
 import { Avatar } from 'grommet/components/Avatar';
 import CreateRoom from '../createRoom';
 
+import getRoom from '../../apiRequests/room/getRoom';
+
+import { useAuthState } from '../../context';
+
 function Rooms(props) {
-    const { roomsData, onClick } = props
+    const { onClick } = props
 
     const [ modal, setModal ] = useState(false)
+    const [ roomsData, setRoomsData ] = useState([])
+
+    const userDetail = useAuthState();
 
     function onClickHandle() {
         setModal(!modal)
     }
+
+    useEffect(() => {
+      getRoom(userDetail.token).then((data) => {
+        // eslint-disable-next-line no-console
+        console.log(data)
+        setRoomsData(data.data.rooms)
+      })
+    }, []);
 
     if (roomsData.length === 0)
         return (
@@ -32,7 +47,7 @@ function Rooms(props) {
             <Box
               direction="row"
               pad="small"
-              key={element.name}
+              key={element.roomName}
               onClick={() => (onClick(element))}
               justify="center"
             >
@@ -43,7 +58,7 @@ function Rooms(props) {
                 <Text
                   weight="bold"
                 >
-                  {element.name.toUpperCase()[0]}
+                  {element.roomName.toUpperCase()[0]}
                 </Text>
               </Avatar>
             </Box>
@@ -72,7 +87,7 @@ function Rooms(props) {
 }
 
 Rooms.propTypes = {
-    roomsData: propTypes.array,
+    // roomsData: propTypes.array,
     onClick: propTypes.any,
 }
 

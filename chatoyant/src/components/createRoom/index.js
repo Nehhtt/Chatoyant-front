@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState } from 'react';
 import { Layer } from 'grommet/components/Layer';
 import { Box } from 'grommet/components/Box';
@@ -7,18 +8,35 @@ import { TextInput } from 'grommet/components/TextInput';
 import { Button } from 'grommet/components/Button';
 import propTypes from 'prop-types';
 
+import createRoom from '../../apiRequests/room/createRoom'
+import createChat from '../../apiRequests/room/createChat';
+
 // const backgroundColor = "dark-3"
 // const borderColor = "dark-2"
 
+import { useAuthState } from '../../context';
 
 function CreateRoom(props) {
     const { handleModal } = props;
 
     const [ val, setValue ] = useState({name: ""})
 
-    function create(name) {
+    const userDetail = useAuthState();
+
+    function create({ name }) {
         // eslint-disable-next-line no-console
-        console.log(name)
+        createRoom({roomName: name, chatName: name}, userDetail.token).then((data) => {
+            if (data.status === "success") {
+                createChat({roomName: name, chatName: name}, userDetail.token).then((chatData) => {
+                    if (chatData.status === "success")
+                        console.log(chatData)
+                    else
+                        console.log(chatData)
+                })
+            } else {
+                console.log(data)
+            }
+        })
         handleModal()
     }
 

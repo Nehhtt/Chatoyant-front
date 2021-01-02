@@ -21,8 +21,8 @@ export async function loginUser(dispatch, loginPayload) {
     }
 
     dispatch({ type: 'LOGIN_ERROR', error: data.error.message });
-
-    return "Error";
+    // eslint-disable-next-line consistent-return
+    return;
   } catch (error) {
     dispatch({ type: 'LOGIN_ERROR', error });
   }

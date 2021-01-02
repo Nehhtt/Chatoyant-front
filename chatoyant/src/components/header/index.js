@@ -1,11 +1,15 @@
 import React from 'react';
 import { Box } from 'grommet/components/Box';
 import { Text } from 'grommet/components/Text';
-import PropTypes from 'prop-types';
 
 import displayText from '../../utils/languages'
 
-function Header(props) {
+import { useAuthState } from '../../context';
+
+
+function Header() {
+
+  const { userDetails } = useAuthState();
 
   return (
     <Box
@@ -26,14 +30,10 @@ function Header(props) {
         justify="center"
         pad={{left: "small"}}
       >
-        <Text size="xlarge" weight="bold">{displayText(props.userName)}</Text>
+        <Text size="xlarge" weight="bold">{displayText(userDetails.userName)}</Text>
       </Box>
     </Box>
   );
-}
-
-Header.propTypes = {
-    userName: PropTypes.string.isRequired
 }
 
 export default Header;

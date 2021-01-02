@@ -37,7 +37,7 @@ function Main() {
           border={{color: borderColor, side: "right"}}
           basis="small"
         >
-          <Rooms roomsData={[{name: "test"}, {name: "machmach"}]} onClick={onClickHandle} />
+          <Rooms onClick={onClickHandle} />
         </Box>
         <Box  
           background={backgroundColor}
