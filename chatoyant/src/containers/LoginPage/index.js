@@ -21,7 +21,7 @@ function LoginPage(props) {
         password: value.passwd,
       });
       if (response.status === 'success') {
-        props.history.push('/welcome');
+        props.history.push('/main');
       }
     } catch (error) {
       <Text>{errorMessage}</Text>;
