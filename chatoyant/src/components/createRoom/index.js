@@ -7,6 +7,9 @@ import { FormField } from 'grommet/components/FormField';
 import { TextInput } from 'grommet/components/TextInput';
 import { Button } from 'grommet/components/Button';
 import propTypes from 'prop-types';
+import displayText from '../../utils/languages';
+
+import { useAuthState } from '../../context';
 
 import createRoom from '../../apiRequests/room/createRoom'
 import createChat from '../../apiRequests/room/createChat';
@@ -14,12 +17,11 @@ import createChat from '../../apiRequests/room/createChat';
 // const backgroundColor = "dark-3"
 // const borderColor = "dark-2"
 
-import { useAuthState } from '../../context';
 
 function CreateRoom(props) {
-    const { handleModal } = props;
+  const { handleModal } = props;
 
-    const [ val, setValue ] = useState({name: ""})
+  const [val, setValue] = useState({ name: '' });
 
     const userDetail = useAuthState();
 
@@ -42,22 +44,27 @@ function CreateRoom(props) {
 
   return (
     <Layer>
-      <Box
-        pad="small"
-      >
+      <Box pad="small">
         <Box>
           <Form
             value={val}
-            onChange={nextValue => setValue(nextValue)}
+            onChange={(nextValue) => setValue(nextValue)}
             onReset={() => setValue({})}
-            onSubmit={({value}) => create(value)}
+            onSubmit={({ value }) => create(value)}
           >
-            <FormField name="name" htmlfor="text-input-id" label="Room Name">
+            <FormField
+              name="name"
+              htmlfor="text-input-id"
+              label={displayText('Nom de la room')}
+            >
               <TextInput id="text-input-id" name="name" value={val.name} />
             </FormField>
             <Box direction="row" gap="medium">
-              <Button type="submit" primary label="Create" />
-              <Button onClick={() => handleModal()} label="Close" />
+              <Button type="submit" primary label={displayText('Créer')} />
+              <Button
+                onClick={() => handleModal()}
+                label={displayText('Fermer')}
+              />
             </Box>
           </Form>
         </Box>
@@ -67,7 +74,7 @@ function CreateRoom(props) {
 }
 
 CreateRoom.propTypes = {
-    handleModal: propTypes.func
-}
+  handleModal: propTypes.func,
+};
 
 export default CreateRoom;

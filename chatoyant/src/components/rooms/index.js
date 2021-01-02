@@ -4,6 +4,7 @@ import { Box } from 'grommet/components/Box';
 import { Text } from 'grommet/components/Text';
 import { Avatar } from 'grommet/components/Avatar';
 import CreateRoom from '../createRoom';
+import displayText from '../../utils/languages';
 
 import getRoom from '../../apiRequests/room/getRoom';
 
@@ -17,9 +18,9 @@ function Rooms(props) {
 
     const userDetail = useAuthState();
 
-    function onClickHandle() {
-        setModal(!modal)
-    }
+  function onClickHandle() {
+    setModal(!modal);
+  }
 
     useEffect(() => {
       getRoom(userDetail.token).then((data) => {
@@ -58,36 +59,29 @@ function Rooms(props) {
                 <Text
                   weight="bold"
                 >
-                  {element.roomName.toUpperCase()[0]}
+                  {displayText(element.roomName.toUpperCase()[0])}
                 </Text>
               </Avatar>
             </Box>
         ))}
         </Box>
-        <Box
-          direction="row"
-          justify="center"
-        >
+        <Box direction="row" justify="center">
           <Avatar
-            background={{color: "dark-1"}}
+            background={{ color: 'dark-1' }}
             size="medium"
             onClick={() => onClickHandle()}
           >
-            <Text
-              color="white"
-              size="xxlarge"
-            >
+            <Text color="white" size="xxlarge">
               +
             </Text>
           </Avatar>
         </Box>
         {modal && <CreateRoom handleModal={onClickHandle} />}
       </Box>
-    );
+  );
 }
 
 Rooms.propTypes = {
-    // roomsData: propTypes.array,
     onClick: propTypes.any,
 }
 

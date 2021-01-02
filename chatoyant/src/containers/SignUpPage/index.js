@@ -7,6 +7,7 @@ import { TextInput } from 'grommet/components/TextInput';
 import { Text } from 'grommet/components/Text';
 import PropTypes from 'prop-types';
 import { signUpUser, useAuthState, useAuthDispatch } from '../../context';
+import displayText from '../../utils/languages';
 
 function SignUpPage(props) {
   const [value, setValue] = React.useState({ email: '', passwd: '', name: '' });
@@ -39,29 +40,29 @@ function SignUpPage(props) {
           onChange={(nextValue) => setValue(nextValue)}
           onSubmit={({ value: nextValue }) => handleLogin(nextValue)}
         >
-          <FormField label="Nom" name="name" required>
+          <FormField label={displayText('Nom')} name="name" required>
             <TextInput name="name" type="text" />
           </FormField>
-          <FormField label="email" name="email" required>
+          <FormField label={displayText('email')} name="email" required>
             <TextInput name="email" type="email" />
           </FormField>
-          <FormField label="Mot de passe" name="passwd" required>
+          <FormField label={displayText('Mot de passe')} name="passwd" required>
             <TextInput name="passwd" type="password" />
           </FormField>
 
           {message && (
             <Box pad={{ horizontal: 'small' }}>
-              <Text color="status-error">{message}</Text>
+              <Text color="status-error">{displayText(message)}</Text>
             </Box>
           )}
           {errorMessage && (
             <Box pad={{ horizontal: 'small' }}>
-              <Text color="status-error">{errorMessage}</Text>
+              <Text color="status-error">{displayText(errorMessage)}</Text>
             </Box>
           )}
 
           <Box direction="row" justify="between" margin={{ top: 'medium' }}>
-            <Button type="submit" label="Connexion" primary />
+            <Button type="submit" label={displayText('Inscription')} primary />
           </Box>
         </Form>
       </Box>

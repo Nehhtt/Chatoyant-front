@@ -1,23 +1,24 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { Box } from 'grommet/components/Box';
 
-import useWindowSize from '../../utils/screenSize'
+import useWindowSize from '../../utils/screenSize';
 
 import Header from '../../components/header';
 import Rooms from '../../components/rooms';
 import Welcome from '../../components/welcome';
 import Chat from '../../components/chat';
 
-const backgroundColor = "dark-3"
-const borderColor = "dark-2"
+const backgroundColor = 'dark-3';
+const borderColor = 'dark-2';
 
-function Main() {
+function Main(props) {
   const size = useWindowSize();
 
-  const [ choosedRoom, chooseRoom ] = useState(null);
+  const [choosedRoom, chooseRoom] = useState(null);
 
   function onClickHandle(val) {
-    chooseRoom(val)
+    chooseRoom(val);
   }
 
   return (
@@ -27,26 +28,17 @@ function Main() {
       border={{ color: borderColor, size: 'medium' }}
       background={backgroundColor}
     >
-      <Header userName="test" />
-      <Box 
-        direction="row"
-        height="100%"
-      >
-        <Box  
+      <Header userName="test" history={props.history} />
+      <Box direction="row" height="100%">
+        <Box
           background={backgroundColor}
-          border={{color: borderColor, side: "right"}}
+          border={{ color: borderColor, side: 'right' }}
           basis="small"
         >
           <Rooms onClick={onClickHandle} />
         </Box>
-        <Box  
-          background={backgroundColor}
-          pad="small"
-          basis="full"
-        >
-          {
-            choosedRoom?<Chat />:<Welcome />
-          }
+        <Box background={backgroundColor} pad="small" basis="full">
+          {choosedRoom ? <Chat /> : <Welcome />}
         </Box>
       </Box>
     </Box>

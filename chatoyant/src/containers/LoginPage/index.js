@@ -6,6 +6,7 @@ import { Box } from 'grommet/components/Box';
 import { TextInput } from 'grommet/components/TextInput';
 import { Text } from 'grommet/components/Text';
 import PropTypes from 'prop-types';
+import displayText from '../../utils/languages';
 import { loginUser, useAuthState, useAuthDispatch } from '../../context';
 
 function LoginPage(props) {
@@ -36,11 +37,11 @@ function LoginPage(props) {
           onChange={(nextValue) => setValue(nextValue)}
           onSubmit={({ value: nextValue }) => handleLogin(nextValue)}
         >
-          <FormField label="email" name="email" required>
+          <FormField label={displayText('email')} name="email" required>
             <TextInput name="email" type="email" />
           </FormField>
 
-          <FormField label="Mot de passe" name="passwd" required>
+          <FormField label={displayText('Mot de passe')} name="passwd" required>
             <TextInput name="passwd" type="password" />
           </FormField>
 
@@ -51,7 +52,7 @@ function LoginPage(props) {
           )}
 
           <Box direction="row" justify="between" margin={{ top: 'medium' }}>
-            <Button type="submit" label="Connexion" primary />
+            <Button type="submit" label={displayText('Connexion')} primary />
           </Box>
         </Form>
       </Box>

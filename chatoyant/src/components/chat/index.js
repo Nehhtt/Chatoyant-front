@@ -5,93 +5,85 @@ import { TextInput } from 'grommet/components/TextInput';
 import { Button } from 'grommet/components/Button';
 import { Keyboard } from 'grommet/components/Keyboard';
 import { InfiniteScroll } from 'grommet/components/InfiniteScroll';
-import socketIOClient from "socket.io-client";
-
+import socketIOClient from 'socket.io-client';
+import displayText from '../../utils/languages';
 import Message from '../message';
 
 // const backgroundColor = "dark-3"
 // const borderColor = "dark-2"
 
-const ENDPOINT = "http://127.0.0.1:8080";
+const ENDPOINT = 'http://127.0.0.1:8080';
 
 function Welcome() {
+  const [newMessage, setMessage] = useState('');
+  const [roomMessages, setRoomMessages] = useState([]);
 
-  const [ newMessage, setMessage ] = useState("")
-  const [ roomMessages, setRoomMessages ] = useState([
-  ])
-
-  const messagesEndRef = useRef(null)
+  const messagesEndRef = useRef(null);
 
   const socket = socketIOClient(ENDPOINT);
 
-
   function handleSend() {
-      // call api request
-      setRoomMessages([
-        ...roomMessages,
-        {content: newMessage, key: roomMessages.length}
-      ])
-      socket.emit('chat message', newMessage)
-      setMessage("")
-      scrollToBottom()
+    // call api request
+    setRoomMessages([
+      ...roomMessages,
+      { content: newMessage, key: roomMessages.length },
+    ]);
+    socket.emit('chat message', newMessage);
+    setMessage('');
+    scrollToBottom();
   }
 
   const scrollToBottom = () => {
-    messagesEndRef.current.scrollIntoView({ behavior: "instant" })
-  }
+    messagesEndRef.current.scrollIntoView({ behavior: 'instant' });
+  };
 
   useEffect(scrollToBottom, [roomMessages]);
 
   useEffect(() => {
-    socket.connect()
+    socket.connect();
     socket.on('connect', (data) => {
-      console.log("c'est connecté", data)
+      console.log("c'est connecté", data);
     });
 
     socket.on('received message', (data) => {
-      console.log("c'est reçus", data)
+      console.log("c'est reçus", data);
     });
 
     return () => socket.disconnect();
   }, []);
 
   return (
-    <Box
-      direction="column"
-      height="100%"
-    >
-      <Box
-        direction="column"
-        height="95%"
-        overflow="auto"
-      >
+    <Box direction="column" height="100%">
+      <Box direction="column" height="95%" overflow="auto">
         <InfiniteScroll items={roomMessages} show={roomMessages.length - 1}>
           {(element) => (
-            <Message key={element.key} userName="Hoho" date="20/12/2030" content={element.content} />
+            <Message
+              key={element.key}
+              userName="Hoho"
+              date="20/12/2030"
+              content={element.content}
+            />
           )}
         </InfiniteScroll>
         <div ref={messagesEndRef} />
       </Box>
-      <Box
-        direction="row"
-      >
-        <Box
-          width="90%"
-        >
-          <Keyboard 
-            onEnter={() => handleSend()}
-          >
-            <TextInput 
-              placeholder="type here"
+      <Box direction="row">
+        <Box width="90%">
+          <Keyboard onEnter={() => handleSend()}>
+            <TextInput
+              placeholder={displayText('Tapez ici')}
               value={newMessage}
-              onChange={event => setMessage(event.target.value)}
+              onChange={(event) => setMessage(event.target.value)}
             />
           </Keyboard>
         </Box>
-        <Box
-          margin={{left: 'medium'}}
-        >
-          <Button primary label="Send" size="medium" onClick={() => handleSend()} />
+        <Box margin={{ left: 'medium' }}>
+          <Button
+            primary
+            label={displayText('Envoyer')}
+            size="medium"
+            onClick={() => handleSend()}
+          />
         </Box>
       </Box>
     </Box>
