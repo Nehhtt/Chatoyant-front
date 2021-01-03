@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 import { Box } from 'grommet/components/Box';
@@ -17,7 +16,6 @@ function Rooms(props) {
   const userDetail = useAuthState();
 
   function refreshRooms() {
-    console.log('salut');
     getRoom(userDetail.token).then((data) => {
       setRoomsData(data.data.rooms);
     });

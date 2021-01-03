@@ -1,9 +1,7 @@
-/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { Box } from 'grommet/components/Box';
-
+import PropTypes from 'prop-types';
 import useWindowSize from '../../utils/screenSize';
-
 import Header from '../../components/header';
 import Rooms from '../../components/rooms';
 import Welcome from '../../components/welcome';
@@ -18,8 +16,6 @@ function Main(props) {
   const [choosedRoom, chooseRoom] = useState(null);
 
   function onClickHandle(val) {
-    // eslint-disable-next-line no-console
-    console.log(val);
     chooseRoom(val);
   }
 
@@ -50,5 +46,9 @@ function Main(props) {
     </Box>
   );
 }
+
+Main.propTypes = {
+  history: PropTypes.object,
+};
 
 export default Main;

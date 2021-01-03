@@ -3,21 +3,17 @@ import { Box } from 'grommet/components/Box';
 import { TextInput } from 'grommet/components/TextInput';
 import { Button } from 'grommet/components/Button';
 import { Keyboard } from 'grommet/components/Keyboard';
-
 import propTypes from 'prop-types';
-
 import displayText from '../../utils/languages';
 
 function InputMessage(props) {
-
-  const { handleSend } = props
+  const { handleSend } = props;
   const [newMessage, setMessage] = useState('');
 
   function send() {
-      if (newMessage === '')
-        return;
-      handleSend(newMessage);
-      setMessage('');
+    if (newMessage === '') return;
+    handleSend(newMessage);
+    setMessage('');
   }
 
   return (
@@ -44,7 +40,7 @@ function InputMessage(props) {
 }
 
 InputMessage.propTypes = {
-  handleSend: propTypes.func
-}
+  handleSend: propTypes.func,
+};
 
 export default InputMessage;

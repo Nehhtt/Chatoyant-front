@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const ROOT_URL = 'https://chatoyant-back.herokuapp.com';
 
 export default async function getChat(token, chatName) {
@@ -21,7 +20,6 @@ export default async function getChat(token, chatName) {
 
     return 'error';
   } catch (error) {
-    console.log(error);
     return error;
   }
 }

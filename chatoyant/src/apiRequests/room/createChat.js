@@ -17,6 +17,6 @@ export default async function createChat(payload, token) {
     if (data.status === 'success') return data;
     return 'error';
   } catch (error) {
-    throw new Error('error on chat creation');
+    return 'error';
   }
 }

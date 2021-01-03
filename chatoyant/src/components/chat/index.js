@@ -1,23 +1,16 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/prop-types */
-/* eslint-disable no-console */
 import React, { useState, useRef, useEffect } from 'react';
 import { Box } from 'grommet/components/Box';
-import { TextInput } from 'grommet/components/TextInput';
-import { Button } from 'grommet/components/Button';
-import { Keyboard } from 'grommet/components/Keyboard';
 import { InfiniteScroll } from 'grommet/components/InfiniteScroll';
 import socketIOClient from 'socket.io-client';
-import displayText from '../../utils/languages';
+import PropTypes from 'prop-types';
 import InputMessage from '../inputMessage';
 import Message from '../message';
 import getChat from '../../apiRequests/chat/getChat';
 import { useAuthState } from '../../context';
 
-const ENDPOINT = 'https://chatoyant-back.herokuapp.com' // 'http://127.0.0.1:8080';
+const ENDPOINT = 'https://chatoyant-back.herokuapp.com';
 
 function Chat(props) {
-  const [newMessage, setMessage] = useState('');
   const [roomMessages, setRoomMessages] = useState([]);
 
   const { roomData } = props;
@@ -38,7 +31,6 @@ function Chat(props) {
         ? `0${date.getMonth() + 1}`
         : `${date.getMonth() + 1}`;
     const year = date.getFullYear();
-    const hour = `- ${date.getHours()}h${date.getMinutes()}`
 
     setRoomMessages([
       ...roomMessages,
@@ -49,7 +41,12 @@ function Chat(props) {
         date: `${day}/${month}/${year}`,
       },
     ]);
-    socket.current.emit('chat message', {message: messageValue, userName: userDetails.userName, date: `${day}/${month}/${year}`, chatName: roomData.roomName});
+    socket.current.emit('chat message', {
+      message: messageValue,
+      userName: userDetails.userName,
+      date: `${day}/${month}/${year}`,
+      chatName: roomData.roomName,
+    });
     scrollToBottom();
   }
 
@@ -66,7 +63,6 @@ function Chat(props) {
       socket.current.emit('connect room', roomData.roomName);
 
       socket.current.on('received message', (data) => {
-        console.log('received datatatata', data)
         setRoomMessages([...roomMessages, data]);
       });
     });
@@ -76,8 +72,7 @@ function Chat(props) {
 
   useEffect(() => {
     getChat(token, props.roomData.roomName).then((data) => {
-      console.log('message', data.data.chat);
-      setRoomMessages(data.data.chat)
+      setRoomMessages(data.data.chat);
     });
   }, [roomData]);
 
@@ -101,5 +96,10 @@ function Chat(props) {
     </Box>
   );
 }
+
+Chat.propTypes = {
+  roomData: PropTypes.object,
+  roomName: PropTypes.string,
+};
 
 export default Chat;

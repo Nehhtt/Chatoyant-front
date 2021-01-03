@@ -17,24 +17,23 @@ function Invite(props) {
   const { handleModal, selectedRoom } = props;
 
   const [val, setValue] = useState({ name: '' });
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
 
-    const { token } = useAuthState();
+  const { token } = useAuthState();
 
-    function invite({ name }) {
-        // eslint-disable-next-line no-console
-        console.log(name)
-        inviteUser({email: name, userName: name, roomName: selectedRoom.roomName}, token).then((data) => {
-            if (data.status === "success") {
-                handleModal()
-                return "success"
-            }
-            // eslint-disable-next-line no-console
-            console.log(data)
-            setError(data)
-            return "error"
-        })
-    }
+  function invite({ name }) {
+    inviteUser(
+      { email: name, userName: name, roomName: selectedRoom.roomName },
+      token,
+    ).then((data) => {
+      if (data.status === 'success') {
+        handleModal();
+        return 'success';
+      }
+      setError(data);
+      return 'error';
+    });
+  }
 
   return (
     <Layer>
@@ -51,17 +50,17 @@ function Invite(props) {
               htmlfor="text-input-id"
               label={displayText("Nom ou email de l'utilisateur")}
             >
-              <TextInput id="text-input-id" name="name" value={val.name} />
+              <TextInput
+                id="text-input-id"
+                name="name"
+                value={displayText(val.name)}
+              />
             </FormField>
-            {
-                error && (
-                <Box>
-                  <Text color="red">
-                    {error}
-                  </Text>
-                </Box>
-                )
-            }
+            {error && (
+              <Box>
+                <Text color="red">{error}</Text>
+              </Box>
+            )}
             <Box direction="row" gap="medium">
               <Button type="submit" primary label={displayText('Inviter')} />
               <Button
@@ -78,7 +77,7 @@ function Invite(props) {
 
 Invite.propTypes = {
   handleModal: propTypes.func,
-  selectedRoom: propTypes.object
+  selectedRoom: propTypes.object,
 };
 
 export default Invite;
