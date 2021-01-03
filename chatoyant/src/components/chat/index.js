@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 import React, { useState, useRef, useEffect } from 'react';
 import { Box } from 'grommet/components/Box';
@@ -8,17 +10,20 @@ import { InfiniteScroll } from 'grommet/components/InfiniteScroll';
 import socketIOClient from 'socket.io-client';
 import displayText from '../../utils/languages';
 import Message from '../message';
+import getChat from '../../apiRequests/chat/getChat';
+import { useAuthState } from '../../context';
 
 // const backgroundColor = "dark-3"
 // const borderColor = "dark-2"
 
 const ENDPOINT = 'http://127.0.0.1:8080';
 
-function Welcome() {
+function Welcome(props) {
   const [newMessage, setMessage] = useState('');
   const [roomMessages, setRoomMessages] = useState([]);
 
   const messagesEndRef = useRef(null);
+  const userDetail = useAuthState();
 
   const socket = socketIOClient(ENDPOINT);
 
@@ -28,7 +33,7 @@ function Welcome() {
       ...roomMessages,
       { content: newMessage, key: roomMessages.length },
     ]);
-    socket.emit('chat message', newMessage);
+    // socket.emit('chat message', newMessage);
     setMessage('');
     scrollToBottom();
   }
@@ -39,7 +44,7 @@ function Welcome() {
 
   useEffect(scrollToBottom, [roomMessages]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     socket.connect();
     socket.on('connect', (data) => {
       console.log("c'est connecté", data);
@@ -50,6 +55,13 @@ function Welcome() {
     });
 
     return () => socket.disconnect();
+  }, []); */
+
+  console.log(props.choosedRoom.roomName);
+  useEffect(() => {
+    getChat(userDetail.token, props.choosedRoom.roomName).then((data) => {
+      console.log('message', data);
+    });
   }, []);
 
   return (

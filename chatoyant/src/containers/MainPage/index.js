@@ -38,7 +38,7 @@ function Main(props) {
           <Rooms onClick={onClickHandle} />
         </Box>
         <Box background={backgroundColor} pad="small" basis="full">
-          {choosedRoom ? <Chat /> : <Welcome />}
+          {choosedRoom ? <Chat choosedRoom={choosedRoom} /> : <Welcome />}
         </Box>
       </Box>
     </Box>
