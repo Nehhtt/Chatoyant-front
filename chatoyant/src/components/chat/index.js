@@ -1,29 +1,31 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/prop-types */
 /* eslint-disable no-console */
 import React, { useState, useRef, useEffect } from 'react';
 import { Box } from 'grommet/components/Box';
+import { TextInput } from 'grommet/components/TextInput';
+import { Button } from 'grommet/components/Button';
+import { Keyboard } from 'grommet/components/Keyboard';
 import { InfiniteScroll } from 'grommet/components/InfiniteScroll';
 import socketIOClient from 'socket.io-client';
-
-import propTypes from 'prop-types';
-
-import { useAuthState } from '../../context';
-
-import Message from '../message';
+import displayText from '../../utils/languages';
 import InputMessage from '../inputMessage';
-
+import Message from '../message';
+import getChat from '../../apiRequests/chat/getChat';
+import { useAuthState } from '../../context';
 
 const ENDPOINT = 'http://127.0.0.1:8080';
 
 function Chat(props) {
+  const [newMessage, setMessage] = useState('');
   const [roomMessages, setRoomMessages] = useState([]);
 
-  const { userDetails } = useAuthState();
+  const { roomData } = props
 
   const messagesEndRef = useRef(null);
+  const { userDetails, token } = useAuthState();
+  
   const socket = useRef();
-
-
-  const { roomData } = props
 
   function handleSend(messageValue) {
     const date = new Date()
@@ -47,20 +49,27 @@ function Chat(props) {
   useEffect(scrollToBottom, [roomMessages]);
 
   useEffect(() => {
-      socket.current = socketIOClient(ENDPOINT);
-      socket.current.connect();
-      socket.current.on('connect', () => {
-        socket.current.emit('connect room', roomData.roomName);
-        
-        socket.current.on('received message', (data) => {
-          setRoomMessages([
-            ...roomMessages,
-            data
-          ])
-        });
+    socket.current = socketIOClient(ENDPOINT);
+    socket.current.connect();
+    socket.current.on('connect', () => {
+      socket.current.emit('connect room', roomData.roomName);
+      
+      socket.current.on('received message', (data) => {
+        setRoomMessages([
+          ...roomMessages,
+          data
+        ])
       });
+    });
 
     return () => socket.current.disconnect();
+  }, []);
+
+  console.log(props.roomData.roomName);
+  useEffect(() => {
+    getChat(token, props.roomData.roomName).then((data) => {
+      console.log('message', data);
+    });
   }, []);
 
   useEffect(() => {
@@ -87,10 +96,6 @@ function Chat(props) {
       <InputMessage handleSend={handleSend} />
     </Box>
   );
-}
-
-Chat.propTypes = {
-  roomData: propTypes.object
 }
 
 export default Chat;

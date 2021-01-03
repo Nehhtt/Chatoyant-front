@@ -19,7 +19,7 @@ function Main(props) {
 
   function onClickHandle(val) {
     // eslint-disable-next-line no-console
-    console.log(val)
+    console.log(val);
     chooseRoom(val);
   }
 
@@ -30,7 +30,11 @@ function Main(props) {
       border={{ color: borderColor, size: 'medium' }}
       background={backgroundColor}
     >
-      <Header userName="test" history={props.history} selectedRoom={choosedRoom} />
+      <Header
+        userName="test"
+        history={props.history}
+        selectedRoom={choosedRoom}
+      />
       <Box direction="row" height="100%">
         <Box
           background={backgroundColor}

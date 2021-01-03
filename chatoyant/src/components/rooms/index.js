@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 import { Box } from 'grommet/components/Box';
@@ -11,7 +12,6 @@ import { useAuthState } from '../../context';
 
 function Rooms(props) {
   const { onClick } = props;
-
   const [modal, setModal] = useState(false);
   const [roomsData, setRoomsData] = useState([]);
 
@@ -23,7 +23,11 @@ function Rooms(props) {
 
   useEffect(() => {
     getRoom(userDetail.token).then((data) => {
-      setRoomsData(data.data.rooms);
+      console.log('ici', roomsData.length, data.data.rooms.length);
+      if (data.data) {
+        if (roomsData.length !== data.data.rooms.length)
+          setRoomsData(data.data.rooms);
+      }
     });
   }, []);
 
