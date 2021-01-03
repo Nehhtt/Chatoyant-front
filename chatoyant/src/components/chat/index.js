@@ -38,7 +38,7 @@ function Chat(props) {
       ...roomMessages,
       { content: messageValue, key: roomMessages.length, userName: userDetails.userName, date: `${day}/${month}/${year}` },
     ]);
-    socket.current.emit('chat message', {message: messageValue, user: userDetails.userName, date: `${day}/${month}/${year}`});
+    socket.current.emit('chat message', {message: messageValue, userName: userDetails.userName, date: `${day}/${month}/${year}`, chatName: roomData.roomName});
     scrollToBottom();
   }
 
@@ -68,16 +68,11 @@ function Chat(props) {
   console.log(props.roomData.roomName);
   useEffect(() => {
     getChat(token, props.roomData.roomName).then((data) => {
-      console.log('message', data);
+      console.log('message', data.data.chat);
+      setRoomMessages(data.data.chat)
     });
-  }, []);
-
-  useEffect(() => {
-    console.log("intoUse", roomData)
-
-    // return () => ();
   }, [roomData]);
-
+  
   return (
     <Box direction="column" height="100%">
       <Box direction="column" height="95%" overflow="auto">
@@ -88,6 +83,7 @@ function Chat(props) {
               userName={element.userName}
               date={element.date}
               content={element.content}
+              isUser={element.userName === userDetails.userName}
             />
           )}
         </InfiniteScroll>

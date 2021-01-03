@@ -35,7 +35,7 @@ function Header(props) {
       <Box
         background="dark-3"
         pad={{ top: 'small', bottom: 'small'}}
-        width="11%"
+        width="9em"
         border={{ color: 'dark-2', size: 'small', side: 'right' }}
         justify='center'
       >

@@ -39,7 +39,7 @@ function Main(props) {
         <Box
           background={backgroundColor}
           border={{ color: borderColor, side: 'right' }}
-          basis="small"
+          width="9em"
         >
           <Rooms onClick={onClickHandle} />
         </Box>
