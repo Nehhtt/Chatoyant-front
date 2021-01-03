@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import { Button } from 'grommet/components/Button';
 import { Form } from 'grommet/components/Form';
@@ -17,7 +16,6 @@ function LoginPage(props) {
   const [loading, setLoading] = React.useState(false);
 
   const dispatch = useAuthDispatch();
-  console.log('-----', loading);
 
   const handleLogin = () => {
     setLoading(true);

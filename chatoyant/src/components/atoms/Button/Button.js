@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -9,7 +8,6 @@ import displayText from '../../../utils/languages';
 
 const Button = ({ to, loading, ...rest }) => {
   if (to) {
-    console.log(to);
     return (
       <Link to={to}>
         <GrommetButton

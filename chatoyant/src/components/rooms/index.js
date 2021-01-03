@@ -5,7 +5,6 @@ import { Text } from 'grommet/components/Text';
 import { Avatar } from 'grommet/components/Avatar';
 import CreateRoom from '../createRoom';
 import displayText from '../../utils/languages';
-
 import getRoom from '../../apiRequests/room/getRoom';
 
 import { useAuthState } from '../../context';
@@ -24,11 +23,9 @@ function Rooms(props) {
 
   useEffect(() => {
     getRoom(userDetail.token).then((data) => {
-      // eslint-disable-next-line no-console
-      console.log(data);
       setRoomsData(data.data.rooms);
     });
-  }, []);
+  }, [roomsData]);
 
   return (
     <Box direction="column" height="100%">
