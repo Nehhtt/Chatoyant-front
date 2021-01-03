@@ -15,6 +15,10 @@ Executez la commande `npm install`
 ## Démarrage
 
 Executez la commande `npm start`
+```
+lancer le linter
+```
+Executez la commande `npm run lint`
 
 ## Versions
 
