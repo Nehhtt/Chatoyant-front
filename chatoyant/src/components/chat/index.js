@@ -33,7 +33,7 @@ function Welcome(props) {
       ...roomMessages,
       { content: newMessage, key: roomMessages.length },
     ]);
-    // socket.emit('chat message', newMessage);
+    socket.emit('chat message', newMessage);
     setMessage('');
     scrollToBottom();
   }
@@ -57,9 +57,9 @@ function Welcome(props) {
     return () => socket.disconnect();
   }, []); */
 
-  console.log(props.choosedRoom.roomName);
+  console.log(props.roomData.roomName);
   useEffect(() => {
-    getChat(userDetail.token, props.choosedRoom.roomName).then((data) => {
+    getChat(userDetail.token, props.roomData.roomName).then((data) => {
       console.log('message', data);
     });
   }, []);

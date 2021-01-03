@@ -10,6 +10,7 @@ export const initialState = {
   token: '' || token,
   loading: false,
   errorMessage: null,
+  
 };
 
 export const AuthReducer = (action) => {
@@ -55,6 +56,11 @@ export const AuthReducer = (action) => {
         loading: false,
         errorMessage: action.error,
       };
+    case 'SET_CURRENT_ROOM':
+        return {
+          ...initialState,
+          loading: false,
+        };
 
     default:
       return action;

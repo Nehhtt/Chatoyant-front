@@ -29,7 +29,7 @@ function Rooms(props) {
           setRoomsData(data.data.rooms);
       }
     });
-  }, [roomsData]);
+  }, []);
 
   return (
     <Box direction="column" height="100%">

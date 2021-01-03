@@ -18,6 +18,8 @@ function Main(props) {
   const [choosedRoom, chooseRoom] = useState(null);
 
   function onClickHandle(val) {
+    // eslint-disable-next-line no-console
+    console.log(val);
     chooseRoom(val);
   }
 
@@ -28,7 +30,11 @@ function Main(props) {
       border={{ color: borderColor, size: 'medium' }}
       background={backgroundColor}
     >
-      <Header userName="test" history={props.history} />
+      <Header
+        userName="test"
+        history={props.history}
+        selectedRoom={choosedRoom}
+      />
       <Box direction="row" height="100%">
         <Box
           background={backgroundColor}
@@ -38,7 +44,7 @@ function Main(props) {
           <Rooms onClick={onClickHandle} />
         </Box>
         <Box background={backgroundColor} pad="small" basis="full">
-          {choosedRoom ? <Chat choosedRoom={choosedRoom} /> : <Welcome />}
+          {choosedRoom ? <Chat roomData={choosedRoom} /> : <Welcome />}
         </Box>
       </Box>
     </Box>

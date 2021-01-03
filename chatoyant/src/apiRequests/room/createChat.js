@@ -1,4 +1,4 @@
-const ROOT_URL = 'https://chatoyant-back.herokuapp.com';
+import { ROOT_URL } from '../url';
 
 export default async function createChat(payload, token) {
   const requestOptions = {

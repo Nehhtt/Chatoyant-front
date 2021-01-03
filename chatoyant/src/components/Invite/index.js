@@ -5,34 +5,35 @@ import { Form } from 'grommet/components/Form';
 import { FormField } from 'grommet/components/FormField';
 import { TextInput } from 'grommet/components/TextInput';
 import { Button } from 'grommet/components/Button';
+import { Text } from 'grommet/components/Text';
 import propTypes from 'prop-types';
 import displayText from '../../utils/languages';
 
 import { useAuthState } from '../../context';
 
-import createRoom from '../../apiRequests/room/createRoom';
-import createChat from '../../apiRequests/room/createChat';
+import inviteUser from '../../apiRequests/room/InviteUser';
 
-function CreateRoom(props) {
-  const { handleModal } = props;
+function Invite(props) {
+  const { handleModal, selectedRoom } = props;
 
   const [val, setValue] = useState({ name: '' });
+  const [error, setError] = useState("");
 
-  const userDetail = useAuthState();
+    const { token } = useAuthState();
 
-    function create({ name }) {
-        createRoom({roomName: name, chatName: name}, userDetail.token).then((data) => {
+    function invite({ name }) {
+        // eslint-disable-next-line no-console
+        console.log(name)
+        inviteUser({email: name, userName: name, roomName: selectedRoom.roomName}, token).then((data) => {
             if (data.status === "success") {
-                createChat({roomName: name, chatName: name}, userDetail.token).then((chatData) => {
-                    if (chatData.status === "success")
-                        return 'success'
-                    return 'error'
-                })
+                handleModal()
                 return "success"
             }
+            // eslint-disable-next-line no-console
+            console.log(data)
+            setError(data)
             return "error"
         })
-        handleModal()
     }
 
   return (
@@ -43,17 +44,26 @@ function CreateRoom(props) {
             value={val}
             onChange={(nextValue) => setValue(nextValue)}
             onReset={() => setValue({})}
-            onSubmit={({ value }) => create(value)}
+            onSubmit={({ value }) => invite(value)}
           >
             <FormField
               name="name"
               htmlfor="text-input-id"
-              label={displayText('Nom de la room')}
+              label={displayText("Nom ou email de l'utilisateur")}
             >
               <TextInput id="text-input-id" name="name" value={val.name} />
             </FormField>
+            {
+                error && (
+                <Box>
+                  <Text color="red">
+                    {error}
+                  </Text>
+                </Box>
+                )
+            }
             <Box direction="row" gap="medium">
-              <Button type="submit" primary label={displayText('Créer')} />
+              <Button type="submit" primary label={displayText('Inviter')} />
               <Button
                 onClick={() => handleModal()}
                 label={displayText('Fermer')}
@@ -66,8 +76,9 @@ function CreateRoom(props) {
   );
 }
 
-CreateRoom.propTypes = {
+Invite.propTypes = {
   handleModal: propTypes.func,
+  selectedRoom: propTypes.object
 };
 
-export default CreateRoom;
+export default Invite;
