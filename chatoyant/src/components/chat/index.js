@@ -20,8 +20,8 @@ function Chat(props) {
   const { userDetails } = useAuthState();
 
   const messagesEndRef = useRef(null);
+  const socket = useRef();
 
-  const socket = socketIOClient(ENDPOINT);
 
   const { roomData } = props
 
@@ -36,7 +36,7 @@ function Chat(props) {
       ...roomMessages,
       { content: messageValue, key: roomMessages.length, userName: userDetails.userName, date: `${day}/${month}/${year}` },
     ]);
-    socket.emit('chat message', {message: messageValue, user: userDetails.userName, date: `${day}/${month}/${year}`});
+    socket.current.emit('chat message', {message: messageValue, user: userDetails.userName, date: `${day}/${month}/${year}`});
     scrollToBottom();
   }
 
@@ -47,18 +47,21 @@ function Chat(props) {
   useEffect(scrollToBottom, [roomMessages]);
 
   useEffect(() => {
-      socket.connect();
-      socket.on('connect', () => {
-        console.log("c'est connecté");
-        socket.emit('connect room', roomData.roomName);
+      socket.current = socketIOClient(ENDPOINT);
+      socket.current.connect();
+      socket.current.on('connect', () => {
+        socket.current.emit('connect room', roomData.roomName);
         
-        socket.on('received message', (data) => {
-          console.log("c'est reçus", data);
+        socket.current.on('received message', (data) => {
+          setRoomMessages([
+            ...roomMessages,
+            data
+          ])
         });
       });
 
-    return () => socket.disconnect();
-  }, [socket]);
+    return () => socket.current.disconnect();
+  }, []);
 
   return (
     <Box direction="column" height="100%">

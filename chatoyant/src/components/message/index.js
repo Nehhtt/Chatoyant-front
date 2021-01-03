@@ -17,7 +17,7 @@ function Message(props) {
       </Box>
       <Box width={{ min: '5em' }}>
         <Text margin={{ right: 'xsmall' }} weight="bold">{displayText(props.userName)}</Text>
-        <Text size="small" alignSelf="center">{displayText(props.date)}</Text>
+        <Text>{displayText(props.date)}</Text>
         <Box overflow="scroll" height={{ max: '5em' }}>
           <Text>{displayText(props.content)}</Text>
         </Box>

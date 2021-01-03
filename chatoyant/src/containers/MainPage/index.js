@@ -18,6 +18,8 @@ function Main(props) {
   const [choosedRoom, chooseRoom] = useState(null);
 
   function onClickHandle(val) {
+    // eslint-disable-next-line no-console
+    console.log(val)
     chooseRoom(val);
   }
 
