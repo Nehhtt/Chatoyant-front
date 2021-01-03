@@ -20,7 +20,7 @@ function Chat(props) {
   const { userDetails, token } = useAuthState();
 
   const socket = useRef();
-
+  
   function handleSend(messageValue) {
     const date = new Date();
 
@@ -31,20 +31,21 @@ function Chat(props) {
         ? `0${date.getMonth() + 1}`
         : `${date.getMonth() + 1}`;
     const year = date.getFullYear();
+    const hour = `${date.getHours()}H${date.getMinutes()}`;
 
     setRoomMessages([
       ...roomMessages,
       {
-        content: messageValue,
+        message: messageValue,
         key: roomMessages.length,
-        userName: userDetails.userName,
-        date: `${day}/${month}/${year}`,
+        sender: userDetails.userName,
+        date: `${day}/${month}/${year} - ${hour}`,
       },
     ]);
     socket.current.emit('chat message', {
       message: messageValue,
       userName: userDetails.userName,
-      date: `${day}/${month}/${year}`,
+      date: `${day}/${month}/${year} - ${hour}`,
       chatName: roomData.roomName,
     });
     scrollToBottom();
@@ -82,11 +83,11 @@ function Chat(props) {
         <InfiniteScroll items={roomMessages} show={roomMessages.length - 1}>
           {(element) => (
             <Message
-              key={element.key}
-              userName={element.userName}
+              key={Math.random()}
+              userName={element.sender}
               date={element.date}
-              content={element.content}
-              isUser={element.userName === userDetails.userName}
+              content={element.message}
+              isUser={element.sender === userDetails.userName}
             />
           )}
         </InfiniteScroll>
