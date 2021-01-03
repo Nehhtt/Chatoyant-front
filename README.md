@@ -23,8 +23,6 @@ Executez la commande `npm start`
 
 ## Auteurs
 
-Listez le(s) auteur(s) du projet ici !
-
 - **Nicolas Cathala**
 - **Léa David**
 - **Lucas Aguillon**
