@@ -68,7 +68,10 @@ function Chat(props) {
       });
     });
 
-    return () => socket.current.disconnect();
+    return () => {
+      socket.current.emit('leave room', props.roomData.roomName)
+      socket.current.disconnect()
+    };
   }, []);
 
   useEffect(() => {
