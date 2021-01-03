@@ -18,6 +18,6 @@ export default async function createRoom(payload, token) {
 
     return 'error';
   } catch (error) {
-    throw new Error('error on room creation');
+    return 'error';
   }
 }

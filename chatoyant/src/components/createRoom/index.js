@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { Layer } from 'grommet/components/Layer';
 import { Box } from 'grommet/components/Box';
@@ -9,9 +7,7 @@ import { TextInput } from 'grommet/components/TextInput';
 import { Button } from 'grommet/components/Button';
 import propTypes from 'prop-types';
 import displayText from '../../utils/languages';
-
 import { useAuthState } from '../../context';
-
 import createRoom from '../../apiRequests/room/createRoom';
 import createChat from '../../apiRequests/room/createChat';
 
@@ -76,6 +72,7 @@ function CreateRoom(props) {
 
 CreateRoom.propTypes = {
   handleModal: propTypes.func,
+  refreshRooms: propTypes.func,
 };
 
 export default CreateRoom;

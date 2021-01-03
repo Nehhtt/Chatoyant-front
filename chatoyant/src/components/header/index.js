@@ -3,12 +3,9 @@ import { Box } from 'grommet/components/Box';
 import { Text } from 'grommet/components/Text';
 import { Button } from 'grommet/components/Button';
 import PropTypes from 'prop-types';
-
 import { useAuthDispatch, logout, useAuthState } from '../../context';
-
-import displayText from '../../utils/languages'
-import Invite from '../Invite'
-
+import displayText from '../../utils/languages';
+import Invite from '../Invite';
 
 function Header(props) {
   const dispatch = useAuthDispatch();
@@ -24,8 +21,8 @@ function Header(props) {
   };
 
   const handleModalInvite = () => {
-    setOpen(!open)
-  }
+    setOpen(!open);
+  };
 
   return (
     <Box
@@ -34,18 +31,20 @@ function Header(props) {
     >
       <Box
         background="dark-3"
-        pad={{ top: 'small', bottom: 'small'}}
+        pad={{ top: 'small', bottom: 'small' }}
         width="9em"
         border={{ color: 'dark-2', size: 'small', side: 'right' }}
-        justify='center'
+        justify="center"
       >
-        {
-          selectedRoom && (
-            <Box alignSelf="center">
-              <Button label={displayText('Inviter')} onClick={handleModalInvite} color={{borderColor: "red"}} />
-            </Box>
-          )
-        }
+        {selectedRoom && (
+          <Box alignSelf="center">
+            <Button
+              label={displayText('Inviter')}
+              onClick={handleModalInvite}
+              color={{ borderColor: 'red' }}
+            />
+          </Box>
+        )}
       </Box>
       <Box background="dark-3" justify="center" pad={{ left: 'small' }}>
         <Text size="xlarge" weight="bold">
@@ -55,7 +54,9 @@ function Header(props) {
       <Box alignSelf="center" margin={{ left: 'large' }}>
         <Button label={displayText('Déconnexion')} onClick={handleLogout} />
       </Box>
-      {open && <Invite handleModal={handleModalInvite} selectedRoom={selectedRoom} />}
+      {open && (
+        <Invite handleModal={handleModalInvite} selectedRoom={selectedRoom} />
+      )}
     </Box>
   );
 }
