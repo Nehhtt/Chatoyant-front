@@ -10,24 +10,15 @@ function Message(props) {
     <Box
       direction={props.isUser?"row-reverse":"row"} // reverse row si le message vient de la personne connectée
       pad="xsmall"
-      flex={false}
-      height="80px"
+      width={{ max: '27em' }}
     >
-      <Box pad="small">
-        <Avatar
-          size="medium"
-          responsive={false}
-          src="https://i.imgur.com/EroY8Ii.png"
-        />
+      <Box pad="small" width={{ min: '4em' }}>
+        <Avatar size="medium" src="https://i.imgur.com/EroY8Ii.png" />
       </Box>
-      <Box direction="column">
-        <Box direction="row">
-          <Text margin={{ right: 'xsmall' }} weight="bold">
-            {displayText(props.userName)}
-          </Text>
-          <Text size="xsmall" alignSelf="center">{displayText(props.date)}</Text>
-        </Box>
-        <Box>
+      <Box width={{ min: '5em' }}>
+        <Text margin={{ right: 'xsmall' }} weight="bold">{displayText(props.userName)}</Text>
+        <Text size="small" alignSelf="center">{displayText(props.date)}</Text>
+        <Box overflow="scroll" height={{ max: '5em' }}>
           <Text>{displayText(props.content)}</Text>
         </Box>
       </Box>

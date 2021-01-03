@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const user = localStorage.getItem('currentUser')
   ? JSON.parse(localStorage.getItem('currentUser')).data.user
   : '';
