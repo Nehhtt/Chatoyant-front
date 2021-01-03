@@ -10,22 +10,17 @@ import displayText from '../../utils/languages';
 
 import { useAuthState } from '../../context';
 
-import createRoom from '../../apiRequests/room/createRoom'
+import createRoom from '../../apiRequests/room/createRoom';
 import createChat from '../../apiRequests/room/createChat';
-
-// const backgroundColor = "dark-3"
-// const borderColor = "dark-2"
-
 
 function CreateRoom(props) {
   const { handleModal } = props;
 
   const [val, setValue] = useState({ name: '' });
 
-    const userDetail = useAuthState();
+  const userDetail = useAuthState();
 
     function create({ name }) {
-        // eslint-disable-next-line no-console
         createRoom({roomName: name, chatName: name}, userDetail.token).then((data) => {
             if (data.status === "success") {
                 createChat({roomName: name, chatName: name}, userDetail.token).then((chatData) => {

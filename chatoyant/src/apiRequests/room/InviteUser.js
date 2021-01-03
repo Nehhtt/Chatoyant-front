@@ -1,4 +1,4 @@
-const ROOT_URL = 'https://chatoyant-back.herokuapp.com';
+import { ROOT_URL } from '../url';
 
 export default async function inviteUser(payload, token) {
     const requestOptions = {
@@ -17,7 +17,9 @@ export default async function inviteUser(payload, token) {
         if (data.status === "success")
             return data
 
-        return 'error'
+        // eslint-disable-next-line no-console
+        console.log(data)
+        return data.error.message
       } catch (error) {
         throw new Error("error on invite user")
       }

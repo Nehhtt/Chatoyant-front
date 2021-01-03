@@ -1,35 +1,42 @@
 /* eslint-disable no-console */
 import React, { useState, useRef, useEffect } from 'react';
 import { Box } from 'grommet/components/Box';
-import { TextInput } from 'grommet/components/TextInput';
-import { Button } from 'grommet/components/Button';
-import { Keyboard } from 'grommet/components/Keyboard';
 import { InfiniteScroll } from 'grommet/components/InfiniteScroll';
 import socketIOClient from 'socket.io-client';
-import displayText from '../../utils/languages';
-import Message from '../message';
 
-// const backgroundColor = "dark-3"
-// const borderColor = "dark-2"
+import propTypes from 'prop-types';
+
+import { useAuthState } from '../../context';
+
+import Message from '../message';
+import InputMessage from '../inputMessage';
+
 
 const ENDPOINT = 'http://127.0.0.1:8080';
 
-function Welcome() {
-  const [newMessage, setMessage] = useState('');
+function Chat(props) {
   const [roomMessages, setRoomMessages] = useState([]);
+
+  const { userDetails } = useAuthState();
 
   const messagesEndRef = useRef(null);
 
   const socket = socketIOClient(ENDPOINT);
 
-  function handleSend() {
-    // call api request
+  const { roomData } = props
+
+  function handleSend(messageValue) {
+    const date = new Date()
+
+    const day = date.getDate() < 10?`0${date.getDate()}`:`${date.getDate()}`
+    const month = date.getMonth() + 1 < 10?`0${date.getMonth() + 1}`:`${date.getMonth() + 1}`;
+    const year = date.getFullYear();
+
     setRoomMessages([
       ...roomMessages,
-      { content: newMessage, key: roomMessages.length },
+      { content: messageValue, key: roomMessages.length, userName: userDetails.userName, date: `${day}/${month}/${year}` },
     ]);
-    socket.emit('chat message', newMessage);
-    setMessage('');
+    socket.emit('chat message', {message: messageValue, user: userDetails.userName, date: `${day}/${month}/${year}`});
     scrollToBottom();
   }
 
@@ -40,17 +47,18 @@ function Welcome() {
   useEffect(scrollToBottom, [roomMessages]);
 
   useEffect(() => {
-    socket.connect();
-    socket.on('connect', (data) => {
-      console.log("c'est connecté", data);
-    });
-
-    socket.on('received message', (data) => {
-      console.log("c'est reçus", data);
-    });
+      socket.connect();
+      socket.on('connect', () => {
+        console.log("c'est connecté");
+        socket.emit('connect room', roomData.roomName);
+        
+        socket.on('received message', (data) => {
+          console.log("c'est reçus", data);
+        });
+      });
 
     return () => socket.disconnect();
-  }, []);
+  }, [socket]);
 
   return (
     <Box direction="column" height="100%">
@@ -59,35 +67,21 @@ function Welcome() {
           {(element) => (
             <Message
               key={element.key}
-              userName="Hoho"
-              date="20/12/2030"
+              userName={element.userName}
+              date={element.date}
               content={element.content}
             />
           )}
         </InfiniteScroll>
         <div ref={messagesEndRef} />
       </Box>
-      <Box direction="row">
-        <Box width="90%">
-          <Keyboard onEnter={() => handleSend()}>
-            <TextInput
-              placeholder={displayText('Tapez ici')}
-              value={newMessage}
-              onChange={(event) => setMessage(event.target.value)}
-            />
-          </Keyboard>
-        </Box>
-        <Box margin={{ left: 'medium' }}>
-          <Button
-            primary
-            label={displayText('Envoyer')}
-            size="medium"
-            onClick={() => handleSend()}
-          />
-        </Box>
-      </Box>
+      <InputMessage handleSend={handleSend} />
     </Box>
   );
 }
 
-export default Welcome;
+Chat.propTypes = {
+  roomData: propTypes.object
+}
+
+export default Chat;

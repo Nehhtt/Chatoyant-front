@@ -4,7 +4,12 @@ import { Spinning } from 'grommet-controls';
 import { Box } from 'grommet/components/Box';
 
 const Loader = ({ color }) => (
-  <Box flex={{ shrink: 1, grow: 0 }} align="center" justify="center">
+  <Box
+    flex={{ shrink: 1, grow: 0 }}
+    align="center"
+    margin="xxlarge"
+    justify="center"
+  >
     <Spinning color={color} />
   </Box>
 );

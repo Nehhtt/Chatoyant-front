@@ -5,13 +5,10 @@ import { Avatar } from 'grommet/components/Avatar';
 import propTypes from 'prop-types';
 import displayText from '../../utils/languages';
 
-// const backgroundColor = "dark-3"
-// const borderColor = "dark-2"
-
 function Message(props) {
   return (
     <Box
-      direction="row" // reverse row si le message vient de la personne connectée
+      direction={props.isUser?"row-reverse":"row"} // reverse row si le message vient de la personne connectée
       pad="xsmall"
       flex={false}
       height="80px"
@@ -25,10 +22,10 @@ function Message(props) {
       </Box>
       <Box direction="column">
         <Box direction="row">
-          <Text margin={{ right: 'xsmall' }}>
+          <Text margin={{ right: 'xsmall' }} weight="bold">
             {displayText(props.userName)}
           </Text>
-          <Text>{displayText(props.date)}</Text>
+          <Text size="xsmall" alignSelf="center">{displayText(props.date)}</Text>
         </Box>
         <Box>
           <Text>{displayText(props.content)}</Text>
@@ -42,6 +39,7 @@ Message.propTypes = {
   userName: propTypes.string,
   date: propTypes.string,
   content: propTypes.string,
+  isUser: propTypes.bool
 };
 
 export default Message;

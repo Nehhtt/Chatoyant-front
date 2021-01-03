@@ -5,27 +5,35 @@ import { Form } from 'grommet/components/Form';
 import { FormField } from 'grommet/components/FormField';
 import { TextInput } from 'grommet/components/TextInput';
 import { Button } from 'grommet/components/Button';
+import { Text } from 'grommet/components/Text';
 import propTypes from 'prop-types';
 import displayText from '../../utils/languages';
 
 import { useAuthState } from '../../context';
 
-import inviteUser from '../../apiRequests/InviteUser';
+import inviteUser from '../../apiRequests/room/InviteUser';
 
 function Invite(props) {
   const { handleModal, selectedRoom } = props;
 
   const [val, setValue] = useState({ name: '' });
+  const [error, setError] = useState("");
 
-    const { userDetails } = useAuthState();
+    const { token } = useAuthState();
 
     function invite({ name }) {
-        inviteUser({email: name, userName: name, roomName: selectedRoom.roomName}, userDetails.token).then((data) => {
-            if (data.status === "success")
+        // eslint-disable-next-line no-console
+        console.log(name)
+        inviteUser({email: name, userName: name, roomName: selectedRoom.roomName}, token).then((data) => {
+            if (data.status === "success") {
+                handleModal()
                 return "success"
+            }
+            // eslint-disable-next-line no-console
+            console.log(data)
+            setError(data)
             return "error"
         })
-        handleModal()
     }
 
   return (
@@ -45,8 +53,17 @@ function Invite(props) {
             >
               <TextInput id="text-input-id" name="name" value={val.name} />
             </FormField>
+            {
+                error && (
+                <Box>
+                  <Text color="red">
+                    {error}
+                  </Text>
+                </Box>
+                )
+            }
             <Box direction="row" gap="medium">
-              <Button type="submit" primary label={displayText('Créer')} />
+              <Button type="submit" primary label={displayText('Inviter')} />
               <Button
                 onClick={() => handleModal()}
                 label={displayText('Fermer')}
