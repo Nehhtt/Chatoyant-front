@@ -14,7 +14,7 @@ import Message from '../message';
 import getChat from '../../apiRequests/chat/getChat';
 import { useAuthState } from '../../context';
 
-const ENDPOINT = 'http://127.0.0.1:8080';
+const ENDPOINT = 'https://chatoyant-back.herokuapp.com' // 'http://127.0.0.1:8080';
 
 function Chat(props) {
   const [newMessage, setMessage] = useState('');
@@ -23,6 +23,7 @@ function Chat(props) {
   const { roomData } = props;
 
   const messagesEndRef = useRef(null);
+
   const { userDetails, token } = useAuthState();
 
   const socket = useRef();
@@ -65,6 +66,7 @@ function Chat(props) {
       socket.current.emit('connect room', roomData.roomName);
 
       socket.current.on('received message', (data) => {
+        console.log('received datatatata', data)
         setRoomMessages([...roomMessages, data]);
       });
     });

@@ -10,6 +10,7 @@ function Message(props) {
     <Box
       direction={props.isUser?"row-reverse":"row"} 
       width="90%"
+      flex={false}
     >
       <Box
         direction={props.isUser?"row-reverse":"row"} 

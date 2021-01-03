@@ -14,6 +14,8 @@ function InputMessage(props) {
   const [newMessage, setMessage] = useState('');
 
   function send() {
+      if (newMessage === '')
+        return;
       handleSend(newMessage);
       setMessage('');
   }
