@@ -63,6 +63,12 @@ function Chat(props) {
     return () => socket.current.disconnect();
   }, []);
 
+  useEffect(() => {
+    console.log("intoUse", roomData)
+
+    // return () => ();
+  }, [roomData]);
+
   return (
     <Box direction="column" height="100%">
       <Box direction="column" height="95%" overflow="auto">
