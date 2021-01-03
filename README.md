@@ -22,7 +22,8 @@ Executez la commande `npm start`
 **Dernière version :** 1.0
 
 ## Accès
-    https://chatoyant-front.herokuapp.com/
+
+- https://chatoyant-front.herokuapp.com/
 
 ## Auteurs
 
