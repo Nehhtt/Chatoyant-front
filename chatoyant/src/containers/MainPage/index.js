@@ -28,7 +28,7 @@ function Main(props) {
       border={{ color: borderColor, size: 'medium' }}
       background={backgroundColor}
     >
-      <Header userName="test" history={props.history} />
+      <Header userName="test" history={props.history} selectedRoom={choosedRoom} />
       <Box direction="row" height="100%">
         <Box
           background={backgroundColor}

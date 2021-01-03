@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box } from 'grommet/components/Box';
 import { Text } from 'grommet/components/Text';
 import { Button } from 'grommet/components/Button';
@@ -7,16 +7,26 @@ import PropTypes from 'prop-types';
 import { useAuthDispatch, logout, useAuthState } from '../../context';
 
 import displayText from '../../utils/languages'
+import Invite from '../Invite'
+
 
 function Header(props) {
   const dispatch = useAuthDispatch();
   const { userDetails } = useAuthState();
 
+  const { history, selectedRoom } = props;
+  const [open, setOpen] = useState(false);
+
   const handleLogout = () => {
     logout(dispatch);
 
-    props.history.push('/');
+    history.push('/');
   };
+
+  const handleModalInvite = () => {
+    setOpen(!open)
+  }
+
   return (
     <Box
       direction="row"
@@ -24,13 +34,14 @@ function Header(props) {
     >
       <Box
         background="dark-3"
-        pad={{ top: 'small', bottom: 'small' }}
-        basis="small"
+        pad={{ top: 'small', bottom: 'small', left: "medium", right: "medium" }}
+        basis=""
         border={{ color: 'dark-2', size: 'small', side: 'right' }}
+        justify='center'
       >
-        <Text size="xlarge" textAlign="center" weight="bold">
-          {displayText('Rooms')}
-        </Text>
+        <Box alignSelf="center">
+          <Button label={displayText('Inviter')} onClick={handleModalInvite} color={{borderColor: "red"}} />
+        </Box>
       </Box>
       <Box background="dark-3" justify="center" pad={{ left: 'small' }}>
         <Text size="xlarge" weight="bold">
@@ -40,12 +51,14 @@ function Header(props) {
       <Box alignSelf="center" margin={{ left: 'large' }}>
         <Button label={displayText('Déconnexion')} onClick={handleLogout} />
       </Box>
+      {open && <Invite handleModal={handleModalInvite} selectedRoom={selectedRoom} />}
     </Box>
   );
 }
 
 Header.propTypes = {
   history: PropTypes.object,
+  selectedRoom: PropTypes.object,
 };
 
 export default Header;

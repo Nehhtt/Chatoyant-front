@@ -10,31 +10,19 @@ import displayText from '../../utils/languages';
 
 import { useAuthState } from '../../context';
 
-import createRoom from '../../apiRequests/room/createRoom'
-import createChat from '../../apiRequests/room/createChat';
+import inviteUser from '../../apiRequests/InviteUser';
 
-// const backgroundColor = "dark-3"
-// const borderColor = "dark-2"
-
-
-function CreateRoom(props) {
-  const { handleModal } = props;
+function Invite(props) {
+  const { handleModal, selectedRoom } = props;
 
   const [val, setValue] = useState({ name: '' });
 
-    const userDetail = useAuthState();
+    const { userDetails } = useAuthState();
 
-    function create({ name }) {
-        // eslint-disable-next-line no-console
-        createRoom({roomName: name, chatName: name}, userDetail.token).then((data) => {
-            if (data.status === "success") {
-                createChat({roomName: name, chatName: name}, userDetail.token).then((chatData) => {
-                    if (chatData.status === "success")
-                        return 'success'
-                    return 'error'
-                })
+    function invite({ name }) {
+        inviteUser({email: name, userName: name, roomName: selectedRoom.roomName}, userDetails.token).then((data) => {
+            if (data.status === "success")
                 return "success"
-            }
             return "error"
         })
         handleModal()
@@ -48,12 +36,12 @@ function CreateRoom(props) {
             value={val}
             onChange={(nextValue) => setValue(nextValue)}
             onReset={() => setValue({})}
-            onSubmit={({ value }) => create(value)}
+            onSubmit={({ value }) => invite(value)}
           >
             <FormField
               name="name"
               htmlfor="text-input-id"
-              label={displayText('Nom de la room')}
+              label={displayText("Nom ou email de l'utilisateur")}
             >
               <TextInput id="text-input-id" name="name" value={val.name} />
             </FormField>
@@ -71,8 +59,9 @@ function CreateRoom(props) {
   );
 }
 
-CreateRoom.propTypes = {
+Invite.propTypes = {
   handleModal: propTypes.func,
+  selectedRoom: propTypes.object
 };
 
-export default CreateRoom;
+export default Invite;
