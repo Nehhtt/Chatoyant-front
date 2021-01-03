@@ -9,32 +9,49 @@ import { Keyboard } from 'grommet/components/Keyboard';
 import { InfiniteScroll } from 'grommet/components/InfiniteScroll';
 import socketIOClient from 'socket.io-client';
 import displayText from '../../utils/languages';
+import InputMessage from '../inputMessage';
 import Message from '../message';
 import getChat from '../../apiRequests/chat/getChat';
 import { useAuthState } from '../../context';
 
-// const backgroundColor = "dark-3"
-// const borderColor = "dark-2"
-
 const ENDPOINT = 'http://127.0.0.1:8080';
 
-function Welcome(props) {
+function Chat(props) {
   const [newMessage, setMessage] = useState('');
   const [roomMessages, setRoomMessages] = useState([]);
 
+  const { roomData } = props;
+
   const messagesEndRef = useRef(null);
-  const userDetail = useAuthState();
+  const { userDetails, token } = useAuthState();
 
-  const socket = socketIOClient(ENDPOINT);
+  const socket = useRef();
 
-  function handleSend() {
-    // call api request
+  function handleSend(messageValue) {
+    const date = new Date();
+
+    const day =
+      date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`;
+    const month =
+      date.getMonth() + 1 < 10
+        ? `0${date.getMonth() + 1}`
+        : `${date.getMonth() + 1}`;
+    const year = date.getFullYear();
+
     setRoomMessages([
       ...roomMessages,
-      { content: newMessage, key: roomMessages.length },
+      {
+        content: messageValue,
+        key: roomMessages.length,
+        userName: userDetails.userName,
+        date: `${day}/${month}/${year}`,
+      },
     ]);
-    socket.emit('chat message', newMessage);
-    setMessage('');
+    socket.current.emit('chat message', {
+      message: messageValue,
+      user: userDetails.userName,
+      date: `${day}/${month}/${year}`,
+    });
     scrollToBottom();
   }
 
@@ -44,22 +61,22 @@ function Welcome(props) {
 
   useEffect(scrollToBottom, [roomMessages]);
 
-  /* useEffect(() => {
-    socket.connect();
-    socket.on('connect', (data) => {
-      console.log("c'est connecté", data);
-    });
-
-    socket.on('received message', (data) => {
-      console.log("c'est reçus", data);
-    });
-
-    return () => socket.disconnect();
-  }, []); */
-
-  console.log(userDetail);
   useEffect(() => {
-    getChat(userDetail.token, props.roomData.roomName).then((data) => {
+    socket.current = socketIOClient(ENDPOINT);
+    socket.current.connect();
+    socket.current.on('connect', () => {
+      socket.current.emit('connect room', roomData.roomName);
+
+      socket.current.on('received message', (data) => {
+        setRoomMessages([...roomMessages, data]);
+      });
+    });
+
+    return () => socket.current.disconnect();
+  }, []);
+
+  useEffect(() => {
+    getChat(token, props.roomData.roomName).then((data) => {
       console.log('message', data);
     });
   }, []);
@@ -78,7 +95,7 @@ function Welcome(props) {
           {(element) => (
             <Message
               key={element.key}
-              userName={userDetail.userDetails.userName}
+              userName={userDetails.userDetails.userName}
               date={date()}
               content={element.content}
             />
@@ -86,27 +103,9 @@ function Welcome(props) {
         </InfiniteScroll>
         <div ref={messagesEndRef} />
       </Box>
-      <Box direction="row">
-        <Box width="90%">
-          <Keyboard onEnter={() => handleSend()}>
-            <TextInput
-              placeholder={displayText('Tapez ici')}
-              value={newMessage}
-              onChange={(event) => setMessage(event.target.value)}
-            />
-          </Keyboard>
-        </Box>
-        <Box margin={{ left: 'medium' }}>
-          <Button
-            primary
-            label={displayText('Envoyer')}
-            size="medium"
-            onClick={() => handleSend()}
-          />
-        </Box>
-      </Box>
+      <InputMessage handleSend={handleSend} />
     </Box>
   );
 }
 
-export default Welcome;
+export default Chat;
