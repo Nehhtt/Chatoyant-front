@@ -57,12 +57,19 @@ function Welcome(props) {
     return () => socket.disconnect();
   }, []); */
 
-  console.log(props.roomData.roomName);
+  console.log(userDetail);
   useEffect(() => {
     getChat(userDetail.token, props.roomData.roomName).then((data) => {
       console.log('message', data);
     });
   }, []);
+
+  function date() {
+    const current = new Date();
+    return `${current.getDate()}/${
+      current.getMonth() + 1
+    }/${current.getFullYear()} - ${current.getHours()}h${current.getMinutes()}`;
+  }
 
   return (
     <Box direction="column" height="100%">
@@ -71,8 +78,8 @@ function Welcome(props) {
           {(element) => (
             <Message
               key={element.key}
-              userName="Hoho"
-              date="20/12/2030"
+              userName={userDetail.userDetails.userName}
+              date={date()}
               content={element.content}
             />
           )}
