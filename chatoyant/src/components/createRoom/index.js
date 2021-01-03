@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { Layer } from 'grommet/components/Layer';
 import { Box } from 'grommet/components/Box';
@@ -20,20 +22,26 @@ function CreateRoom(props) {
 
   const userDetail = useAuthState();
 
-    function create({ name }) {
-        createRoom({roomName: name, chatName: name}, userDetail.token).then((data) => {
-            if (data.status === "success") {
-                createChat({roomName: name, chatName: name}, userDetail.token).then((chatData) => {
-                    if (chatData.status === "success")
-                        return 'success'
-                    return 'error'
-                })
-                return "success"
-            }
-            return "error"
-        })
-        handleModal()
-    }
+  function create({ name }) {
+    createRoom({ roomName: name, chatName: name }, userDetail.token).then(
+      (data) => {
+        if (data.status === 'success') {
+          createChat({ roomName: name, chatName: name }, userDetail.token).then(
+            (chatData) => {
+              if (chatData.status === 'success') {
+                props.refreshRooms();
+                return 'success';
+              }
+              return 'error';
+            },
+          );
+          return 'success';
+        }
+        return 'error';
+      },
+    );
+    handleModal();
+  }
 
   return (
     <Layer>

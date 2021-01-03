@@ -20,23 +20,33 @@ function Chat(props) {
   const [newMessage, setMessage] = useState('');
   const [roomMessages, setRoomMessages] = useState([]);
 
-  const { roomData } = props
+  const { roomData } = props;
 
   const messagesEndRef = useRef(null);
   const { userDetails, token } = useAuthState();
-  
+
   const socket = useRef();
 
   function handleSend(messageValue) {
-    const date = new Date()
+    const date = new Date();
 
-    const day = date.getDate() < 10?`0${date.getDate()}`:`${date.getDate()}`
-    const month = date.getMonth() + 1 < 10?`0${date.getMonth() + 1}`:`${date.getMonth() + 1}`;
+    const day =
+      date.getDate() < 10 ? `0${date.getDate()}` : `${date.getDate()}`;
+    const month =
+      date.getMonth() + 1 < 10
+        ? `0${date.getMonth() + 1}`
+        : `${date.getMonth() + 1}`;
     const year = date.getFullYear();
+    const hour = `- ${date.getHours()}h${date.getMinutes()}`
 
     setRoomMessages([
       ...roomMessages,
-      { content: messageValue, key: roomMessages.length, userName: userDetails.userName, date: `${day}/${month}/${year}` },
+      {
+        content: messageValue,
+        key: roomMessages.length,
+        userName: userDetails.userName,
+        date: `${day}/${month}/${year}`,
+      },
     ]);
     socket.current.emit('chat message', {message: messageValue, userName: userDetails.userName, date: `${day}/${month}/${year}`, chatName: roomData.roomName});
     scrollToBottom();
@@ -53,26 +63,22 @@ function Chat(props) {
     socket.current.connect();
     socket.current.on('connect', () => {
       socket.current.emit('connect room', roomData.roomName);
-      
+
       socket.current.on('received message', (data) => {
-        setRoomMessages([
-          ...roomMessages,
-          data
-        ])
+        setRoomMessages([...roomMessages, data]);
       });
     });
 
     return () => socket.current.disconnect();
   }, []);
 
-  console.log(props.roomData.roomName);
   useEffect(() => {
     getChat(token, props.roomData.roomName).then((data) => {
       console.log('message', data.data.chat);
       setRoomMessages(data.data.chat)
     });
   }, [roomData]);
-  
+
   return (
     <Box direction="column" height="100%">
       <Box direction="column" height="95%" overflow="auto">

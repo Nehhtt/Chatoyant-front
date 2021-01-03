@@ -14,8 +14,14 @@ function Rooms(props) {
   const { onClick } = props;
   const [modal, setModal] = useState(false);
   const [roomsData, setRoomsData] = useState([]);
-
   const userDetail = useAuthState();
+
+  function refreshRooms() {
+    console.log('salut');
+    getRoom(userDetail.token).then((data) => {
+      setRoomsData(data.data.rooms);
+    });
+  }
 
   function onClickHandle() {
     setModal(!modal);
@@ -23,11 +29,7 @@ function Rooms(props) {
 
   useEffect(() => {
     getRoom(userDetail.token).then((data) => {
-      console.log('ici', roomsData.length, data.data.rooms.length);
-      if (data.data) {
-        if (roomsData.length !== data.data.rooms.length)
-          setRoomsData(data.data.rooms);
-      }
+      setRoomsData(data.data.rooms);
     });
   }, []);
 
@@ -61,7 +63,9 @@ function Rooms(props) {
           </Text>
         </Avatar>
       </Box>
-      {modal && <CreateRoom handleModal={onClickHandle} />}
+      {modal && (
+        <CreateRoom refreshRooms={refreshRooms} handleModal={onClickHandle} />
+      )}
     </Box>
   );
 }
