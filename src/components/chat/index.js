@@ -72,7 +72,7 @@ function Chat(props) {
       socket.current.emit('leave room', props.roomData.roomName)
       socket.current.disconnect()
     };
-  }, []);
+  }, [roomMessages]);
 
   useEffect(() => {
     getChat(token, props.roomData.roomName).then((data) => {
